@@ -5,7 +5,8 @@ frontend:
       commands:
         - cd drain-adoption-frontend
         - echo "Installing dependencies..."
-        - npm ci
+        - npm cache clean --force
+        - npm ci --legacy-peer-deps
     build:
       commands:
         - cd drain-adoption-frontend
