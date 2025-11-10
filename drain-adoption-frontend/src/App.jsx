@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useParams } 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import Home from './components/Home';
 import DrainList from './components/DrainList';
 import DrainDetail from './components/DrainDetail';
 import DrainForm from './components/DrainForm';
@@ -59,6 +60,7 @@ function Navigation() {
         <nav className="header-nav">
           {user ? (
             <>
+              <Link to="/drains" className="nav-link">Drains</Link>
               {isAdmin() && (
                 <Link to="/notifications" className="notification-bell">
                   🔔
@@ -125,7 +127,8 @@ function App() {
           <Navigation />
           <main>
             <Routes>
-              <Route path="/" element={<DrainList />} />
+              <Route path="/" element={<Home />} />
+              <Route path="/drains" element={<DrainList />} />
               <Route path="/drains/new" element={<DrainForm />} />
               <Route path="/drains/:id/edit" element={<DrainFormWrapper />} />
               <Route path="/drains/:id" element={<DrainDetail />} />
