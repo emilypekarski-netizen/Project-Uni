@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
+import API_BASE_URL from '../config/api';
 
 const DrainList = () => {
   const [drains, setDrains] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { isAdmin, getToken } = useAuth();
+  const { isAdmin, getToken, user, getUserId } = useAuth();
 
   useEffect(() => {
     fetchDrains();
@@ -15,7 +16,7 @@ const DrainList = () => {
 
   const fetchDrains = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/drains');
+      const response = await fetch(`${API_BASE_URL}/api/drains`);
       if (!response.ok) {
         throw new Error('Failed to fetch drains');
       }
@@ -35,7 +36,7 @@ const DrainList = () => {
 
     try {
       const token = getToken();
-      const response = await fetch(`http://localhost:8080/api/drains/${drainId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/drains/${drainId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -75,8 +76,14 @@ const DrainList = () => {
               className="drain-image"
             />
             <h3>{drain.name}</h3>
-            <p>
-              Status: {drain.adoptedByUserId ? 'Adopted' : 'Available'}
+            <p className={`drain-status ${drain.adoptedByUserId && user && drain.adoptedByUserId === user.userId ? 'adopted-by-you' : ''}`}>
+              Status: {
+                drain.adoptedByUserId 
+                  ? (user && drain.adoptedByUserId === user.userId 
+                      ? '✅ Adopted by You' 
+                      : '🔒 Adopted')
+                  : '🆓 Available'
+              }
             </p>
             <div className="card-actions">
               <Link to={`/drains/${drain.id}`} className="view-button">
