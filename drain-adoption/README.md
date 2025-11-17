@@ -18,7 +18,6 @@ A Spring Boot application for managing drain adoptions.
 The application will start on `http://localhost:8080`
 
 ## Technologies Used
-
 - Spring Boot 3.1.5
 - Spring Web
 - Spring Data JPA
