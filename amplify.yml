@@ -1,0 +1,30 @@
+version: 1
+applications:
+  - appRoot: drain-adoption-frontend
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - npm cache clean --force
+            - npm ci --legacy-peer-deps
+        build:
+          commands:
+            - npm run build
+      artifacts:
+        baseDirectory: build
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
+      customHeaders:
+        - pattern: '**/*'
+          headers:
+            - key: 'Strict-Transport-Security'
+              value: 'max-age=31536000; includeSubDomains'
+            - key: 'X-Content-Type-Options'
+              value: 'nosniff'
+            - key: 'X-Frame-Options'
+              value: 'DENY'
+            - key: 'X-XSS-Protection'
+              value: '1; mode=block'
